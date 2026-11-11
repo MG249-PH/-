@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منصة التأهيل والاعتماد المهني - عامل تحميل وتفريغ</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Font - Cairo -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        saudi: {
+                            green: '#006C35',
+                            gold: '#D4AF37',
+                            dark: '#0f291e',
+                            light: '#f2f8f4'
+                        }
+                    },
+                    fontFamily: {
+                        cairo: ['Cairo', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: #f8fafc;
+        }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #006C35;
+            border-radius: 4px;
+        }
+        /* Card Flip Effect */
+        .perspective-1000 {
+            perspective: 1000px;
+        }
+        .transform-style-3d {
+            transform-style: preserve-3d;
+        }
+        .backface-hidden {
+            backface-visibility: hidden;
+        }
+        .rotate-y-180 {
+            transform: rotateY(180deg);
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col justify-between">
+
+    <!-- Header / Navbar -->
+    <header class="bg-saudi-dark text-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <div class="flex items-center space-x-3 space-x-reverse">
+                    <div class="w-12 h-12 bg-saudi-green rounded-xl flex items-center justify-center border border-saudi-gold shadow-md">
+                        <i class="fa-solid font-bold text-2xl text-saudi-gold fa-truck-ramp-box"></i>
+                    </div>
+                    <div>
+                        <h1 class="font-bold text-lg sm:text-xl text-white">الاعتماد المهني السعودي</h1>
+                        <p class="text-xs text-saudi-gold font-semibold">مهنة عامل تحميل وتفريغ (Loading & Unloading Specialist)</p>
+                    </div>
+                </div>
+
+                <!-- Navigation Tabs -->
+                <nav class="hidden md:flex space-x-1 space-x-reverse bg-slate-800/60 p-1.5 rounded-xl border border-slate-700">
+                    <button onclick="switchTab('exam')" id="tab-exam" class="tab-btn px-5 py-2.5 rounded-lg text-sm font-bold transition-all duration-200 bg-saudi-green text-white shadow">
+                        <i class="fa-solid fa-file-pen ml-2"></i>الاختبار التفاعلي (50 سؤالاً)
+                    </button>
+                    <button onclick="switchTab('flashcards')" id="tab-flashcards" class="tab-btn px-5 py-2.5 rounded-lg text-sm font-bold transition-all duration-200 text-slate-300 hover:text-white hover:bg-slate-700/50">
+                        <i class="fa-solid fa-clone ml-2"></i>البطاقات التعليمية (25)
+                    </button>
+                    <button onclick="switchTab('guide')" id="tab-guide" class="tab-btn px-5 py-2.5 rounded-lg text-sm font-bold transition-all duration-200 text-slate-300 hover:text-white hover:bg-slate-700/50">
+                        <i class="fa-solid fa-book-open ml-2"></i>دليل الدراسة المكرس
+                    </button>
+                </nav>
+            </div>
+        </div>
+
+        <!-- Mobile Navigation Bar -->
+        <div class="md:hidden bg-slate-900 border-t border-slate-800 flex justify-around p-2 text-xs font-bold">
+            <button onclick="switchTab('exam')" id="mtab-exam" class="mtab-btn flex-1 py-2 text-center text-saudi-gold border-b-2 border-saudi-gold">
+                <i class="fa-solid fa-file-pen block text-base mb-1"></i>الاختبار
+            </button>
+            <button onclick="switchTab('flashcards')" id="mtab-flashcards" class="mtab-btn flex-1 py-2 text-center text-slate-400">
+                <i class="fa-solid fa-clone block text-base mb-1"></i>البطاقات
+            </button>
+            <button onclick="switchTab('guide')" id="mtab-guide" class="mtab-btn flex-1 py-2 text-center text-slate-400">
+                <i class="fa-solid fa-book-open block text-base mb-1"></i>الدليل
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-grow w-full">
+
+        <!-- ================= EXAM SECTION ================= -->
+        <section id="section-exam" class="space-y-6">
+            <!-- Exam Header Box -->
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 flex flex-col md:flex-row justify-between items-center gap-4">
+                <div>
+                    <h2 class="text-2xl font-bold text-slate-800 mb-1">اختبار الجاهزية والاعتماد المهني</h2>
+                    <p class="text-sm text-slate-500">يشمل 50 سؤالاً شاملاً لكافة أنواع التحميل والتفريغ ومقاييس السلامة في المملكة العربية السعودية.</p>
+                </div>
+                <!-- Progress & Score Badge -->
+                <div class="flex items-center gap-4 w-full md:w-auto justify-between md:justify-end">
+                    <div class="bg-emerald-50 border border-emerald-200 px-4 py-2 rounded-xl text-center">
+                        <span class="block text-xs font-semibold text-emerald-600">النتيجة الحالية</span>
+                        <span id="score-text" class="text-xl font-extrabold text-emerald-700">0 / 50</span>
+                    </div>
+                    <button onclick="restartExam()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-2.5 rounded-xl font-bold text-sm transition flex items-center gap-2">
+                        <i class="fa-solid fa-rotate-right"></i> إعادة الاختبار
+                    </button>
+                </div>
+            </div>
+
+            <!-- Question Card Container -->
+            <div id="quiz-container" class="bg-white rounded-2xl shadow-md border border-slate-200 p-6 sm:p-8 space-y-6">
+                <!-- Question Top Header -->
+                <div class="flex justify-between items-center border-b border-slate-100 pb-4">
+                    <span id="question-number" class="bg-saudi-green text-white text-xs font-bold px-3 py-1.5 rounded-full">السؤال 1 من 50</span>
+                    <span id="question-category" class="text-xs font-bold text-slate-400 bg-slate-100 px-3 py-1 rounded-md">السلامة العامة والرفع اليدوي</span>
+                </div>
+
+                <!-- Question Text -->
+                <h3 id="question-text" class="text-lg sm:text-xl font-bold text-slate-800 leading-relaxed">
+                    جاري تحميل السؤال...
+                </h3>
+
+                <!-- Options Grid -->
+                <div id="options-container" class="grid grid-cols-1 gap-3 pt-2">
+                    <!-- Options injected dynamically -->
+                </div>
+
+                <!-- Explanation / Feedback Box (Hidden initially) -->
+                <div id="feedback-box" class="hidden p-4 rounded-xl border text-sm font-semibold leading-relaxed">
+                </div>
+
+                <!-- Question Footer Controls -->
+                <div class="flex justify-between items-center pt-4 border-t border-slate-100">
+                    <button id="btn-prev" onclick="navigateQuestion(-1)" class="px-5 py-2.5 rounded-xl border border-slate-300 text-slate-600 font-bold hover:bg-slate-50 disabled:opacity-40 disabled:cursor-not-allowed text-sm">
+                        <i class="fa-solid fa-arrow-right ml-2"></i>السؤال السابق
+                    </button>
+                    <button id="btn-next" onclick="navigateQuestion(1)" class="px-6 py-2.5 rounded-xl bg-saudi-green text-white font-bold hover:bg-emerald-800 transition text-sm">
+                        السؤال التالي<i class="fa-solid fa-arrow-left mr-2"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= FLASHCARDS SECTION ================= -->
+        <section id="section-flashcards" class="hidden space-y-6">
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 flex flex-col md:flex-row justify-between items-center gap-4">
+                <div>
+                    <h2 class="text-2xl font-bold text-slate-800 mb-1">بطاقات المراجعة السريعة (Flashcards)</h2>
+                    <p class="text-sm text-slate-500">انقر على البطاقة لمشاهدة الإجابة والتوضيح المعياري.</p>
+                </div>
+                <div class="text-sm font-bold text-saudi-green bg-emerald-50 border border-emerald-200 px-4 py-2 rounded-xl">
+                    بطاقة <span id="card-num">1</span> من <span id="card-total">25</span>
+                </div>
+            </div>
+
+            <!-- Flashcard Display Area -->
+            <div class="flex flex-col items-center justify-center space-y-6">
+                <div onclick="flipCard()" class="w-full max-w-xl h-80 perspective-1000 cursor-pointer">
+                    <div id="flashcard-inner" class="relative w-full h-full duration-500 transform-style-3d shadow-xl rounded-2xl border border-slate-200 bg-white">
+                        <!-- Front Side -->
+                        <div class="absolute inset-0 w-full h-full backface-hidden rounded-2xl p-8 flex flex-col justify-between bg-gradient-to-br from-white to-slate-50">
+                            <div class="flex justify-between items-center text-xs font-bold text-slate-400">
+                                <span><i class="fa-solid fa-circle-question text-saudi-gold ml-1"></i>المفهوم / السؤال</span>
+                                <span>اضغط للقلب <i class="fa-solid fa-rotate ml-1"></i></span>
+                            </div>
+                            <h3 id="card-front-text" class="text-xl sm:text-2xl font-bold text-slate-800 text-center leading-relaxed">
+                                --
+                            </h3>
+                            <div class="text-xs text-center text-slate-400 font-medium">
+                                <i class="fa-solid fa-lightbulb text-amber-500 ml-1"></i>تلميح: <span id="card-hint">--</span>
+                            </div>
+                        </div>
+                        <!-- Back Side -->
+                        <div class="absolute inset-0 w-full h-full backface-hidden rotate-y-180 rounded-2xl p-8 flex flex-col justify-between bg-saudi-dark text-white">
+                            <div class="flex justify-between items-center text-xs font-bold text-saudi-gold">
+                                <span><i class="fa-solid fa-circle-check ml-1"></i>الإجابة والمعيار المهني</span>
+                                <span>اضغط للعودة <i class="fa-solid fa-rotate ml-1"></i></span>
+                            </div>
+                            <p id="card-back-text" class="text-lg sm:text-xl font-semibold text-center leading-relaxed text-slate-100">
+                                --
+                            </p>
+                            <div class="text-xs text-center text-slate-400">
+                                الاعتماد المهني السعودي - سلامة المناولة
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Flashcard Controls -->
+                <div class="flex items-center gap-4">
+                    <button onclick="prevCard()" class="w-12 h-12 bg-white rounded-full border border-slate-300 text-slate-700 hover:bg-slate-100 flex items-center justify-center font-bold text-lg shadow-sm">
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </button>
+                    <button onclick="flipCard()" class="px-6 py-3 bg-saudi-gold text-slate-900 rounded-xl font-bold shadow-md hover:bg-amber-400 transition text-sm">
+                        قلب البطاقة <i class="fa-solid fa-rotate mr-2"></i>
+                    </button>
+                    <button onclick="nextCard()" class="w-12 h-12 bg-white rounded-full border border-slate-300 text-slate-700 hover:bg-slate-100 flex items-center justify-center font-bold text-lg shadow-sm">
+                        <i class="fa-solid fa-chevron-left"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= STUDY GUIDE SECTION ================= -->
+        <section id="section-guide" class="hidden space-y-6">
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+                <h2 class="text-2xl font-bold text-slate-800 mb-1">دليل الدراسة والاحتراف المهني</h2>
+                <p class="text-sm text-slate-500">دليل مرجعي موحد لكافة قواعد وإجراءات التحميل والتفريغ والسلامة المعتمدة في المملكة العربية السعودية.</p>
+            </div>
+
+            <!-- Guide Topics Cards Container -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Topic 1 -->
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 space-y-3">
+                    <div class="flex items-center gap-3 text-saudi-green">
+                        <div class="w-10 h-10 rounded-xl bg-emerald-50 flex items-center justify-center text-xl font-bold border border-emerald-100">
+                            <i class="fa-solid fa-user-shield"></i>
+                        </div>
+                        <h3 class="font-bold text-lg text-slate-800">1. أدوات الوقاية الشخصية (PPE)</h3>
+                    </div>
+                    <ul class="text-sm text-slate-600 space-y-2 list-disc list-inside leading-relaxed">
+                        <li><strong>حذاء السلامة (Steel Toe Shoes):</strong> يحمي القدمين من سقوط الأوزان والمسامير.</li>
+                        <li><strong>خوذة الرأس (Hard Hat):</strong> واقية من المواد المنزلقة من الأرفف العالية.</li>
+                        <li><strong>السترة العاكسة (Hi-Vis Vest):</strong> إجبارية في أرصفة التحميل برؤية كاملة لسائقي الشاحنات والرافعات.</li>
+                        <li><strong>كمامات الغبار (Dust Masks):</strong> حماية الجهاز التنفسي عند مناولة أكياس الأسمنت والمسحوق.</li>
+                    </ul>
+                </div>
+
+                <!-- Topic 2 -->
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 space-y-3">
+                    <div class="flex items-center gap-3 text-saudi-green">
+                        <div class="w-10 h-10 rounded-xl bg-emerald-50 flex items-center justify-center text-xl font-bold border border-emerald-100">
+                            <i class="fa-solid fa-child-reaching"></i>
+                        </div>
+                        <h3 class="font-bold text-lg text-slate-800">2. تقنيات الرفع والمناولة اليدوية</h3>
+                    </div>
+                    <ul class="text-sm text-slate-600 space-y-2 list-disc list-inside leading-relaxed">
+                        <li><strong>الوضعية الصحيحة:</strong> ثني الركبتين، إبقاء الظهر مستقيماً، والرفع بواسطة عضلات الساقين.</li>
+                        <li><strong>المسافة الآمنة:</strong> إبقاء الحمل قريباً جداً من الجسم عند مركز ثقل الجسم.</li>
+                        <li><strong>الوزن الأقصى الفردي:</strong> 20 إلى 25 كجم كحد أقصى للعامل الواحـد.</li>
+                        <li><strong>الألواح الزجاجية والرخام:</strong> تُحمل وتُنقل دائماً بالوضعية الرأسية (عمودياً).</li>
+                    </ul>
+                </div>
+
+                <!-- Topic 3 -->
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 space-y-3">
+                    <div class="flex items-center gap-3 text-saudi-green">
+                        <div class="w-10 h-10 rounded-xl bg-emerald-50 flex items-center justify-center text-xl font-bold border border-emerald-100">
+                            <i class="fa-solid fa-truck-ramp-box"></i>
+                        </div>
+                        <h3 class="font-bold text-lg text-slate-800">3. المقطورات وحاويات الشحن البحرية</h3>
+                    </div>
+                    <ul class="text-sm text-slate-600 space-y-2 list-disc list-inside leading-relaxed">
+                        <li><strong>كوابح العجلات (Wheel Chocks):</strong> تثبيت شاحنة التحميل لمنع التحريد عن الرصيف.</li>
+                        <li><strong>فتح الأبواب بحذر:</strong> الوقوف بجانب الباب وليس أمامه مباشرة تحسباً لسقوط البضائع.</li>
+                        <li><strong>توزيع الأوزان:</strong> وضع الأحمال الثقيلة في الأسفل وعلى المحاور، والأحمال الخفيفة في الأعالي.</li>
+                        <li><strong>جسور التحميل (Dock Levelers):</strong> التأكد من تثبيتها وتطابق قدرة تحملها مع وزن المعدة.</li>
+                    </ul>
+                </div>
+
+                <!-- Topic 4 -->
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 space-y-3">
+                    <div class="flex items-center gap-3 text-saudi-green">
+                        <div class="w-10 h-10 rounded-xl bg-emerald-50 flex items-center justify-center text-xl font-bold border border-emerald-100">
+                            <i class="fa-solid fa-triangle-exclamation"></i>
+                        </div>
+                        <h3 class="font-bold text-lg text-slate-800">4. المواد الخطرة والتسربات الكيميائية</h3>
+                    </div>
+                    <ul class="text-sm text-slate-600 space-y-2 list-disc list-inside leading-relaxed">
+                        <li><strong>صحيفة بيانات سلامة المواد (SDS):</strong> يجب وضعها في مكان بارز متاح لجميع عمال التحميل.</li>
+                        <li><strong>السوائل القابلة للاشتعال:</strong> تُحفظ وتُنقل بعيداً عن الشرر ومصادر الحرارة.</li>
+                        <li><strong>عند حدوث تسرب مجهول:</strong> إخلاء المنطقة فوراً، تنبيه الآخرين، وإبلاغ مسؤول السلامة.</li>
+                        <li><strong>نقل البراميل:</strong> استخدام العربات المخصصة المزودة بماسكات أمان (Drum Caddy).</li>
+                    </ul>
+                </div>
+
+                <!-- Topic 5: Livestock Handling (HIGHLIGHTED NEW SECTION) -->
+                <div class="bg-amber-50/60 p-6 rounded-2xl shadow-sm border-2 border-amber-300 space-y-3 md:col-span-2">
+                    <div class="flex items-center gap-3 text-amber-700">
+                        <div class="w-10 h-10 rounded-xl bg-amber-100 flex items-center justify-center text-xl font-bold border border-amber-200">
+                            <i class="fa-solid fa-cow"></i>
+                        </div>
+                        <div>
+                            <span class="bg-amber-200 text-amber-900 text-xs font-black px-2 py-0.5 rounded ml-2">قسم هام ومطلوب بالاختبار</span>
+                            <h3 class="font-bold text-lg text-slate-900 inline-block">5. تحميل وتفريغ المواشي والحيوانات الحية (Livestock Handling)</h3>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
+                        <ul class="text-sm text-slate-700 space-y-2 list-disc list-inside leading-relaxed">
+                            <li><strong>الرفق بالحيوان:</strong> يُمنع منعاً باتاً ضرب أو رفس أو سحب المواشي من القرن أو الأذنين أو الذيل أو الأرجل.</li>
+                            <li><strong>رمبات التحميل (Ramps):</strong> يجب أن تحتوي على عوارض خشبية مانعة للانزلاق وحواجز جانبية بارتفاع لا يقل عن 75 سم لمنع السقوط.</li>
+                        </ul>
+                        <ul class="text-sm text-slate-700 space-y-2 list-disc list-inside leading-relaxed">
+                            <li><strong>سلامة العامل:</strong> الوقوف خلف حواجز التوجيه الآمنة وتجنب الوقوف في المسار المباشر لركض المواشي أو خلف الأبقار والإبل للوقاية من الرفس.</li>
+                            <li><strong>الوقاية والصحة:</strong> ارتداء أحذية السلامة والقفازات وتجهيز الشاحنات بأرضيات ممتصة للرطوبة وتطهيرها بعد التفريغ.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-400 border-t border-slate-800 py-6 text-center text-xs font-semibold">
+        <div class="max-w-7xl mx-auto px-4">
+            <p>منصة الاعتماد المهني السعودي - دليل وعوالم اختبار عمال التحميل والتفريغ © 2026</p>
+            <p class="mt-1 text-slate-500">مصممة وفق المعايير العامة للسلامة المهنية والصحة وتأهيل الكوادر بالمركز الوطني للاعتماد المهني</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript Application Logic -->
+    <script>
+        // ================= QUESTIONS DATA (50 QUESTIONS) =================
+        const questionsData = [
+            // Livestock specific questions at the front for visibility
+            {
+                q: "عند تكليفك بتحميل أو تفريغ مواشي وحيوانات حية (إبل، أبقار، غنم)، ما هي الطريقة المعتمدة والآمنة لتوجيهها؟",
+                options: [
+                    "سحب الحيوانات بقوة من أرجلها أو ذيلها.",
+                    "استخدام ممرات ورمبات خشبية آمنة مزودة بحواجز جانبية وعوارض مانعة للانزلاق مع الوقاية خلف حواجز التوجيه.",
+                    "ضرب الحيوانات واستخدام العصا الحادة للإسراع.",
+                    "رفع الحيوانات بواسطة شوكات الرافعة الشوكية مباشرة."
+                ],
+                correct: 1,
+                category: "تحميل المواشي والحيوانات الحية"
+            },
+            {
+                q: "ما هي وسيلة الأمان الواجب توافرها في رمبات (سقالات) تحميل وتفريغ المواشي لمنع انزلاقها وسقوطها؟",
+                options: [
+                    "دهان السقالة بزيوت ناعمة.",
+                    "ترك السقالة ملساء مكشوفة بدون حواف.",
+                    "تزويد المنحدر بعوارض خشبة/مطاطية مانعة للانزلاق وحواف جانبية لا يقل ارتفاعها عن 75 سم.",
+                    "جعل المنحدر شديد الانحدار بزاوية 80 درجة."
+                ],
+                correct: 2,
+                category: "تحميل المواشي والحيوانات الحية"
+            },
+            {
+                q: "ما هي المعدات الأساسية الواجب ارتداؤها دائماً قبل البدء بأعمال التحميل والتفريغ في المستودعات؟",
+                options: ["نظارات شمسية وقبعة قماشية.", "حذاء السلامة، الخوذة، والسترة العاكسة.", "قفازات رياضية فقط.", "صندل مريح وساعة يد."],
+                correct: 1,
+                category: "معدات الوقاية"
+            },
+            {
+                q: "ما هي الطريقة الصحيحة لرفع صندوق ثقيل يدوياً من على الأرض لتجنب إصابات الظهر؟",
+                options: ["الانحناء بالظهر دون ثني الركبتين.", "ثني الركبتين وإبقاء الظهر مستقيماً.", "الرفع بسرعة وفجأة مع تدوير الجذع.", "حمل الصندوق على جانب واحد فقط."],
+                correct: 1,
+                category: "الرفع اليدوي"
+            },
+            {
+                q: "ماذا يجب على عامل التحميل فعله قبل تشغيل الرافعة الشوكية لأول مرة في وردية العمل؟",
+                options: ["بدء الرفع مباشرة بدون فحص.", "إجراء الفحص البصري والتشغيلي للمعدة.", "زيادة السرعة للتأكد من قدرة المحرك.", "تحميل أقصى وزن ممكن للتجربة."],
+                correct: 1,
+                category: "المعدات والرافعات"
+            },
+            {
+                q: "ما هو الإجراء الأهم عند ترتيب البضائع داخل مقطورة الشاحنة لمنع تحركها أثناء السير؟",
+                options: ["استخدام أحزام الربط والتثبيت المحكم.", "ترك مسافات واسعة بين الصناديق.", "تكديس البضائع الثقيلة فوق الخفيفة.", "اعتماد التثبيت بالورق المقوى فقط."],
+                correct: 0,
+                category: "تأمين الشحنات"
+            },
+            {
+                q: "ماذا تعني إشارة تحريك الذراع أفقياً وبسط الكف نحو الأرض بشكل سريع لمشغل الرافعة؟",
+                options: ["رفع الحمولة للأعلى.", "التوقف الفوري عن الحركة.", "خفض الحمولة للأرض.", "التحرك إلى اليمين."],
+                correct: 1,
+                category: "إشارات السلامة"
+            },
+            {
+                q: "كيف يتعامل العامل مع طرد محمل بمواد كيميائية تحمل علامة السوائل القابلة للاشتعال؟",
+                options: ["نقله بعيداً عن مصادر اللهب والحرارة.", "تعريضه للشمس للتجفيف.", "فتحه للتأكد من المحتوى.", "رجه جيداً قبل التفريغ."],
+                correct: 0,
+                category: "المواد الخطرة"
+            },
+            {
+                q: "لماذا يُمنع تجاوز الحد الأقصى للحمولة الآمنة (SWL) للمعدات والرافعات في مواقع العمل؟",
+                options: ["لتوفير الوقود فقط.", "لتجنب انقلاب المعدة وانهيار الهيكل.", "لتقليل ضوضاء المحرك.", "لإبطاء سرعة العمل."],
+                correct: 1,
+                category: "السلامة المهنية"
+            },
+            {
+                q: "ما هو الخطر الأبرز الذي يجب الانتباه له عند فتح أبواب حاوية شحن بحري واردة حديثاً؟",
+                options: ["انخفاض درجة الحرارة بالداخل.", "سقوط وتدفق البضائع بسبب الاهتزاز.", "انبعاث روائح الوجبات.", "تغيّر لون جدران الحاوية."],
+                correct: 1,
+                category: "تفريغ الحاويات"
+            },
+            {
+                q: "عند سحب عربة البليت اليدوية المحملة بوزن ثقيل على منحدر مائل، ما هي الوضعية الآمنة للحركة؟",
+                options: ["المشي أمام العربة دائماً.", "السير خلف العربة للتحكم في سرعتها.", "ترك العربة تنزلق برفق بنفسها.", "الجري أمام العربة لتجنب الاصطدام."],
+                correct: 1,
+                category: "المناولة اليدوية"
+            },
+            {
+                q: "لماذا تعتبر إزالة المخلفات وأغطية التغليف التالفة من أرضية منطقة التحميل أمراً أساسياً؟",
+                options: ["لإعطاء منظر استعراضي.", "لمنع حوادث التعثر والانزلاق.", "لتوفير مساحة لركن السيارات الشخصية.", "لزيادة وزن الشحنات."],
+                correct: 1,
+                category: "نظافة المستودعات"
+            },
+            {
+                q: "ما هو الإجراء الصحيح الذي يجب اتخاذه عند رفع حمولة ذات أبعاد غير منتظمة بواسطة الرافعة؟",
+                options: ["ربطها من المنتصف فقط.", "تحديد مركز ثقل الحمولة وتثبيتها من نقاط الرفع المحددة.", "رفعها بسرعة قبل انزلاقها.", "زيادة سرعة الدوران."],
+                correct: 1,
+                category: "توازن الأحمال"
+            },
+            {
+                q: "عند استخدام جسور التحميل (Dock Levelers) بين رصيف الشحن والشاحنة، ما الذي يجب التأكد منه؟",
+                options: ["أن الجسر مثبت بشكل محكم ويتحمل وزن المعدة والحمولة معا.", "أن الجسر مدهون باللون الأوفر.", "أن مساحة الشاحنة أكبر من المستودع.", "إغلاق أنوار المستودع."],
+                correct: 0,
+                category: "أرصفة التحميل"
+            },
+            {
+                q: "ما هي الخطوة الأولى عند الانتهاء من استخدام الرافعة الشوكية وتوقفها في المكان المخصص؟",
+                options: ["ترك الشوكات مرفوعة للأعلى.", "إنزال الشوكات بالكامل للأرض، تفعيل فرامل اليد، وسحب المفتاح.", "ترك المفتاح في المفتاح وتأخير إيقاف المحرك.", "ترك الشوكات مائلة للforward."],
+                correct: 1,
+                category: "إيقاف المعدات"
+            },
+            {
+                q: "ما هو رمز التغليف القياسي الذي يشير إلى أن الطرد يحتوي على مواد قابلة للتلف بالحرارة؟",
+                options: ["رمز مظلة وعليها قطرات ماء.", "رمز شمس تسطع على صندوق محاط بخط متقطع أو مظلة.", "رمز سهمين للأعلى.", "رمز كأس زجاجي."],
+                correct: 1,
+                category: "رموز الشحن"
+            },
+            {
+                q: "كيف يتم التعامل مع الشحنات الثقيلة جداً عند تحميلها في مقطورة شاحنة لنقلها على الطرق؟",
+                options: ["وضعها في المؤخرة تماماً.", "توزيع الوزن فوق المحاور مباشرة وتثبيتها لمنع الانزلاق.", "وضعها في جانب واحد من المقطورة.", "تجميعها في أعلى السقف."],
+                correct: 1,
+                category: "تحميل الشاحنات"
+            },
+            {
+                q: "عند التعامل مع براميل احتواء المواد السائلة، ما هي المعدة اليدوية الأنسب لنقلها داخل المستودع؟",
+                options: ["عربة نقل الصناديق العادية.", "عربة نقل البراميل المخصصة المزودة بممسك أمان (Drum Caddy/Truck).", "جر البراميل على الأرض يدويًا.", "تدحرج البرميل بالأقدام."],
+                correct: 1,
+                category: "معدات مخصصة"
+            },
+            {
+                q: "ما هو الحد الأقصى الموصى به لوزن الصندوق الذي يمكن للعامل رفعه بمفرده وفق إرشادات السلامة العامة؟",
+                options: ["50 إلى 60 كيلوجرام.", "20 إلى 25 كيلوجرام للظروف الاعتيادية.", "75 كيلوجرام.", "100 كيلوجرام."],
+                correct: 1,
+                category: "الرفع اليدوي"
+            },
+            {
+                q: "ماذا تعني إشارة التواصل اليدوي التي يقوم فيها الموجه بإغلاق قبضة يده وفرد الإبهام نحو الأعلى؟",
+                options: ["خفض الذراع.", "رفع الذراع / رفع الحمولة.", "التوقف التام.", "زيادة السرعة."],
+                correct: 1,
+                category: "إشارات اليد"
+            },
+            {
+                q: "ما هي الممارسة الصحيحة لتخزين البضائع في الأرفف العالية (High Racking Systems)؟",
+                options: ["وضع الطبالي الثقيلة في المستويات العليا.", "وضع الطبالي الثقيلة في المستويات السفلى والخفيفة في المستويات العليا.", "تخزين المواد السائلة في الأعلى الصرف.", "ترك الطبالي بارزة للشارع."],
+                correct: 1,
+                category: "التخزين والأرفف"
+            },
+            {
+                q: "ما هو الإجراء الواجب اتخاذه فوراً في حال انسكاب مادة كيميائية غير معروفة أثناء التفريغ؟",
+                options: ["مسحها باليد فوراً.", "إخلاء المنطقة فوراً، تنبيه الآخرين، وإبلاغ مسؤول السلامة مع مراجعة (SDS).", "غسلها بماء ساخن بدون قفازات.", "تغطيتها بصناديق ورقية."],
+                correct: 1,
+                category: "مخاطر المواد"
+            },
+            {
+                q: "ما الهدف الأساسي من استخدام كوابح العجلات (Wheel Chocks) للشاحنات الواقفة على رصيف التحميل؟",
+                options: ["تزيين إطارات الشاحنة.", "منع تحرك أو تحريد الشاحنة مبتعدة عن الرصيف أثناء دخول الرافعة الشوكية.", "زيادة سرعة التفريغ.", "قياس ارتفاع الشاحنة."],
+                correct: 1,
+                category: "أرصفة التحميل"
+            },
+            {
+                q: "عند مناولة أكياس السمنت أو المواد المسحوقة يدوياً، ما هي وسيلة الحماية الشخصية الإضافية المهمة جداً؟",
+                options: ["نظارات شمسية.", "كمامة الحماية من الغبار والأتربة (Dust Mask / N95).", "خوذة مائية.", "سترة مطاطية."],
+                correct: 1,
+                category: "معدات الوقاية"
+            },
+            {
+                q: "ما الإجراء الواجب اتباعه عند تحميل الشحنات في الحاويات البحرية لضمان عدم تلف البضائع من الرطوبة؟",
+                options: ["رش الماء داخل الحاوية.", "وضع أكياس امتصاص الرطوبة (Desiccant Bags) والتحقق من سلامة جلب الأبواب.", "ترك الأبواب مفتوحة أثناء الإبحار.", "وضع ثلج تحت البضائع."],
+                correct: 1,
+                category: "حماية الشحنات"
+            },
+            {
+                q: "ما هي الخطورة الناجمة عن قيادة الرافعة الشوكية والحمولة مرفوعة لأعلى؟",
+                options: ["انخفاض سرعة الصوت.", "انتقال مركز الثقل للأعلى مما يسبب انقلاب الرافعة بسهولة.", "زيادة استهلاك الضوء.", "تلف عجلة القيادة."],
+                correct: 1,
+                category: "تشغيل الرافعات"
+            },
+            {
+                q: "ما هو الرمز الدولي المستخدم على الصناديق للإشارة إلى البضائع القابلة للكسر؟",
+                options: ["صورة مظلة.", "صورة كأس زجاجي به شرخ.", "صورة سهم متدرج.", "صورة شعلة نار."],
+                correct: 1,
+                category: "رموز الشحن"
+            },
+            {
+                q: "عند تفريغ حمولة خطرة من شاحنة، أين يجب وضع صحيفة بيانات سلامة المواد (SDS)؟",
+                options: ["مخفية في مكتب الإدارة فقط.", "في مكان واضح وبارز ويسهل الوصول إليه لجميع العمال في منطقة العمل.", "داخل الصندوق المغلق.", "تحت إطارات الشاحنة."],
+                correct: 1,
+                category: "المواد الخطرة"
+            },
+            {
+                q: "ما هي الطريقة الصحيحة لنقل الألواح الزجاجية أو الرخامية الكبيرة يدوياً أو آلياً؟",
+                options: ["حملها أفقياً على الظهر.", "حملها ونقلها بالوضعية الرأسية (عمودياً) باستخدام أطقم شفط وقواعد خاصة.", "سحبها على الأرض مباشرة.", "رميها على وسائد قماشية."],
+                correct: 1,
+                category: "بضائع خاصة"
+            },
+            {
+                q: "ما المقصود بـ \"المنطقة العمياء\" (Blind Spot) لدى سائق الرافعة الشوكية أو الشاحنة؟",
+                options: ["منطقة الإضاءة القوية جداً.", "المناطق المحيطة بالمعدة التي لا يستطيع السائق رؤيتها مباشرة أو عبر المرايا.", "المكان المخصص للاستراحة.", "لوحة أجهزة القيادة."],
+                correct: 1,
+                category: "سلامة الحركة"
+            },
+            {
+                q: "عند العمل في مناطق التحميل والتفريغ المفتوحة أثناء الأجواء الماطرة أو الرطبة، ما الخطر الأساسي الواجب الحذر منه؟",
+                options: ["ارتفاع درجة حرارة المحرك.", "انزلاق إطارات المعدات وانزلاق العمال أثناء الرفع والمشي.", "تجمد الوقود في الخزان.", "تغير اتجاه الهواء."],
+                correct: 1,
+                category: "ظروف الطقس"
+            },
+            {
+                q: "ما هي الفائدة الرئيسية من استخدام حوامل التثبيت الخشبية أو البلاستيكية (Dunnage) تحت الشحنات الثقيلة؟",
+                options: ["تجميل الشحنة.", "توفير مسافة أسفل الحمولة لإدخال شوكات الرافعة أو أحزمة الرفع بسهولة.", "زيادة الوزن الإجمالي.", "تحديد سعر البضاعة."],
+                correct: 1,
+                category: "تثبيت البضائع"
+            },
+            {
+                q: "عند توجيه سائق الكرين لرفع حمولة، ما هي الإشارة اليدوية الصحيحة لطلب 'التحريك البطين جداً'؟",
+                options: ["التحريك السريع للكفين.", "وضع يد فوق اليد الأخرى التي تشير للحركة.", "إغلاق العينين.", "الرقص في الموقع."],
+                correct: 1,
+                category: "إشارات اليد"
+            },
+            {
+                q: "ما هو التصرف الصحيح عند اكتشاف وجود تلف في حزام الرفع النسيجي (Sling) قبل بدء العمل؟",
+                options: ["ربطه بعقدة واستخدامه.", "استبعاده فوراً ووسمه بالتالف ومنع استخدامه.", "استخدامه للأحمال الخفيفة فقط.", "تغطيته بشريط لاصق."],
+                correct: 1,
+                category: "أدوات الرفع"
+            },
+            {
+                q: "ما هي الخطوة الأولى عند التحضير لتفريغ شاحنة مبردة محملة بأغذية مجمدة؟",
+                options: ["إطفاء التبريد وترك الأبواب مفتوحة لربوع ساعة.", "التحقق من درجة حرارة المحتوى والتفريغ السريع لغرف التبريد مباشرة.", "ترك الشحنة في الشارع.", "تفريغ الصناديق على الأرض المكشوفة."],
+                correct: 1,
+                category: "البضائع المبردة"
+            },
+            {
+                q: "ما الذي يجب استخدامه لحماية زوايا الصناديق والكرتون عند شد أحزمة التثبيت فوقها؟",
+                options: ["أشرطة مطاطية خفيفة.", "واقيات الزوايا (Corner Protectors).", "أوراق جرائد folded.", "قطع من القماش الرطب."],
+                correct: 1,
+                category: "تأمين الشحنات"
+            },
+            {
+                q: "لماذا يُمنع منعاً باتاً الوقوف أو المشي تحت الأحمال المعلقة بالرافعات؟",
+                options: ["لأنها تحجب الضوء.", "لتجنب خطر الموت أو الإصابة القاتلة في حال سقوط الحمولة.", "لأن حركة الهواء تحتها شديدة.", "لأن السائق قد يغضب."],
+                correct: 1,
+                category: "السلامة المهنية"
+            },
+            {
+                q: "ما المسافة الدنيا الواجب تركها بين أعلى الشحنات المخزنة ورشاشات الحريق السقفية؟",
+                options: ["10 سنتيمترات.", "على الأقل 45 إلى 50 سنتيمتر (18 بوصة).", "لا داعي لترك مسافة.", "مترين على الأقل."],
+                correct: 1,
+                category: "أنظمة الحريق"
+            },
+            {
+                q: "عند تحميل أسطوانات الغاز المضغوط، كيف يجب تثبيتها ونقلها داخل المستودع؟",
+                options: ["مستلقية أفقياً على الأرض.", "بالوضعية الرأسية (القائمة) مع ربطها بسلاسل وتغطية صماماتها.", "دحرجتها يدويًا.", "تجمعيها في أكياس بلاستيكية."],
+                correct: 1,
+                category: "المواد الخطرة"
+            },
+            {
+                q: "ماذا تعني العلامة البرتقالية المثلثية المطبوعة على بعض أطراف الشاحنات أو الطرود؟",
+                options: ["مادة سريعة الاشتعال.", "مركبة بطيئة الحركة أو حمولة بارزة تتطلب الانتباه.", "بضاعة مجانية.", "طعام مأكولات."],
+                correct: 1,
+                category: "رموز السلامة"
+            },
+            {
+                q: "ما هو الإجراء الصحيح عند الرغبة في دخول شاحنة تفريغ باستخدام الرافعة الشوكية؟",
+                options: ["الدخول فوراً بسرعة عالية.", "التأكد من قفل فرامل الشاحنة ووضع كوابح العجلات وثبات رصيف التحميل.", "عدم التنبيه بآلة التنبيه.", "السير بدون إضاءة."],
+                correct: 1,
+                category: "أرصفة التحميل"
+            },
+            {
+                q: "عند التعامل مع صناديق محملة بقطع زجاجية رفيعة، ما هو الاتجاه الصحيح لتستند عليه؟",
+                options: ["أفقياً فوق بعضها البعض.", "رأسياً على حوافها الطولية لتوزيع الإجهاد.", "مائلة بقوة 45 درجة.", "مقلوبة رأساً على عقب."],
+                correct: 1,
+                category: "بضائع خاصة"
+            },
+            {
+                q: "ما الهدف من استخدام بلاستيك التغليف الممتد (Stretch Wrap) حول البضائع المحملة على بليت؟",
+                options: ["إعطاء لون لامع للبضاعة.", "تثبيت الكراتين وتجميعها كوحدة واحدة تمنع الانزلاق والسقوط.", "زيادة حجم الطبلية.", "تقليل وزن الشحنة."],
+                correct: 1,
+                category: "تأمين الشحنات"
+            },
+            {
+                q: "ما التصرف الواجب اتخاذه عند قيادة رافعة شوكية محملة بحمل كبير يعوق الرؤية الأمامية تماماً؟",
+                options: ["القيادة للداخل بسرعة أكبر.", "القيادة بالخلف (Reverse) مع النظر لاتجاه الحركة واستخدام موجه عند الحاجة.", "إغلاق العينين والاعتماد على آلة التنبيه.", "ترك عجلة القيادة."],
+                correct: 1,
+                category: "تشغيل الرافعات"
+            },
+            {
+                q: "ما هو الإجراء المعتمد عند التعامل مع براميل تحتوي على مواد حمضية أكالة؟",
+                options: ["حملها باليد المجردة.", "ارتداء القفازات المقاومة للمواد الكيميائية والنظارات الواقية والسترة المخصصة.", "استخدام عربة خشبية مكشوفة.", "غسل البرميل بالبنزين."],
+                correct: 1,
+                category: "المواد الخطرة"
+            },
+            {
+                q: "ما الفائدة من قراءة بطاقة البيان (Cargo Label) الملصقة على الصندوق قبل تحريكه؟",
+                options: ["معرفة سعر المنتج فقط.", "معرفة وزن الصندوق، توجيهه الصحيح، ومخاطر محتواه.", "تضييع وقت العمل.", "معرفة اسم المصمم."],
+                correct: 1,
+                category: "رموز الشحن"
+            },
+            {
+                q: "كيف يتم تأمين الشحنات السائبة (مثل الحبوب أو الرمل) على متن مقطورات مكشوفة؟",
+                options: ["تركها بدون تغطية.", "تغطيتها بالكامل باستخدام أغطية قماشية (Tarpaulins) وربطها جيداً.", "رش الماء عليها بكثرة.", "دكها بالأقدام فقط."],
+                correct: 1,
+                category: "تحميل الشاحنات"
+            },
+            {
+                q: "ما هي المخاطر الناتجة عن التفريغ السريع وغير المتوازن لجوانب مقطورة الشاحنة؟",
+                options: ["زيادة سرعة الرياح.", "انقلاب المقطورة أو انكسار هيكل التوازن الخاص بها.", "تحسين أداء الإطارات.", "توفير الوقود."],
+                correct: 1,
+                category: "توازن الأحمال"
+            },
+            {
+                q: "عند حدوث خطأ أو إصابة بسيطة أثناء التحميل، ما هو الإجراء الأول الإجباري؟",
+                options: ["تجاهل الأمر ومواصلة العمل.", "إبلاغ مشرف الموقع وتوفير الإسعافات الأولية وتسجيل الحادث.", "مغادرة موقع العمل بدون استئذان.", "إخفاء مكان الإصابة."],
+                correct: 1,
+                category: "إجراءات الطوارئ"
+            },
+            {
+                q: "ما هو العوامل الأكثر تأثيراً على استقرار الرافعة الشوكية عند الانعطاف؟",
+                options: ["نوع الوقود.", "السرعة وارتفاع الحمولة أثناء الانعطاف.", "لون الرافعة.", "شكل المقود."],
+                correct: 1,
+                category: "تشغيل الرافعات"
+            },
+            {
+                q: "ما هي الفائدة الأساسية من استخدام طبالي التحميل الخشبية المعالجة (IPPC Pallets) في الشحن الدولي؟",
+                options: ["أنها أرخص ثمناً.", "خلوها من الآفات والحشرات الزراعية العابرة للحدود.", "أن وزنها أثقل بكثير.", "أنها لا تحترق أبداً."],
+                correct: 1,
+                category: "معايير الشحن"
+            },
+            {
+                q: "قبل البدء برفع أي صندوق ثقيل مع زميل لك (الرفع المزدوج)، ما هو أهم شيء؟",
+                options: ["الرفع في أوقات مختلفة.", "التوافق والتواصل المباشر والاتفاق على لحظة الرفع والتحريك معاً.", "الاعتماد على شخص واحد فقط للشد.", "الصراخ بصوت عالٍ."],
+                correct: 1,
+                category: "الرفع اليدوي"
+            }
+        ];
+
+        // ================= FLASHCARDS DATA =================
+        const flashcardsData = [
+            { front: "تحميل وتفريغ المواشي الحية (Livestock)", back: "يمنع سحبها من الأرجل/الذيل، ويجب استخدام رمبات بعوارض مانعة للانزلاق وحواجز جانبية بارتفاع 75سم لحماية العامل والحيوان.", hint: "الرفق بالحيوان والسلامة" },
+            { front: "سلامة العامل أثناء مناولة المواشي", back: "الوقوف خلف حواجز التوجيه وتجنب الوقوف المباشر خلف الإبل والأبقار لتجنب الرفس والدهس.", hint: "الحماية الشخصية من الرفس" },
+            { front: "المعدات الأساسية للحماية الشخصية (PPE)", back: "حذاء السلامة ذو المقدمة الفولاذية، الخوذة الواقية، والسترة العاكسة.", hint: "معدات إجبارية قبل دخول الموقع" },
+            { front: "الطريقة الصحيحة للرفع اليدوي", back: "ثني الركبتين وإبقاء الظهر مستقيماً مع تقريب الحمولة من الجسم.", hint: "تجنب إصابات العمود الفقري" },
+            { front: "حد الحمولة الآمن (SWL)", back: "الوزن الأقصى الذي يمكن للمعدة أو الحزام رفعه بأمان دون خطر الانقلاب.", hint: "Safe Working Load" },
+            { front: "إشارة التوقف الفوري لمشغل الرافعة", back: "تحريك الذراع أفقياً وبسط الكف نحو الأرض بشكل سريع.", hint: "عند وجود خطر مفاجئ" },
+            { front: "الخطر الرئيسي عند فتح أبواب حاويات الشحن", back: "سقوط أو تدفق البضائع التي تحركت أثناء النقل بسبب الاهتزاز.", hint: "قف بجانب الباب وليس أمامه" },
+            { front: "الإجراء الأول قبل تشغيل الرافعة الشوكية", back: "إجراء الفحص البصري والتشغيلي الشامل للمعدة ولوازم السلامة.", hint: "في بداية كل وردية" },
+            { front: "تأمين البضائع داخل مقطورة الشاحنة", back: "استخدام أحزمة الربط والتثبيت المحكم (Ratchet Straps).", hint: "يمنع الانزلاق والتحرك" },
+            { front: "التعامل مع السوائل القابلة للاشتعال", back: "نقلها وتخزينها بعيداً عن مصادر الحرارة والشرر مع تهوية جيدة.", hint: "الوقاية من الحرائق" },
+            { front: "وضعية الحركة بعربة البليت على منحدر", back: "السير خلف العربة والمقبض للتحكم في سرعتها ومنع الدهس.", hint: "عند النزول بالحمل" },
+            { front: "أهمية تنظيف أرضية أرصفة التحميل", back: "منع حوادث الانزلاق، التعثر، وانثقاب إطارات المعدات.", hint: "إزالة الخشب والمسامير" },
+            { front: "طبالي التحميل / البليت (Pallets)", back: "منصات خشبية أو بلاستيكية تصف عليها البضائع لتسهيل رفعها.", hint: "قاعدة الشحن القياسية" },
+            { front: "رمز مركز الثقل على الشحنة", back: "علامة توضح نقطة توازن الوزن لضمان رفع مستقر ومترابط.", hint: "توازن الأحمال غير المنتظمة" },
+            { front: "الإجراء عند اكتشاف طرد تالف يسرب مادة", back: "إيقاف العمل فوراً، إبلاغ المشرف، وتأمين المنطقة.", hint: "تجنب الملامسة المباشرة" },
+            { front: "توزيع الوزن داخل الشاحنة", back: "وضع الأحمال الثقيلة في الأسفل والمركز والأحمال الخفيفة بالأعلى.", hint: "توازن المحاور وحماية المقطورة" },
+            { front: "مسافة الأمان بالقرب من الرافعة الشوكية", back: "الحفاظ على اتصال بصري مع المشغل وعدم الوقوف بالنقاط العمياء.", hint: "تجنب التواجد خلف المعدة" },
+            { front: "أحزمة التثبيت (Ratchet Straps)", back: "أحزمة قماشية مقواة مزودة بمقبض ضغط لربط البضائع بإحكام.", hint: "أداة الشد والربط" },
+            { front: "إشارة خفض الحمولة لمشغل الرافعة", back: "توجيه السبابة إلى الأسفل وصنع حركة دائرية صغيرة باليد.", hint: "لتنزيل الحمل بحذر" },
+            { front: "رمز الزجاجة المكسورة على الطرد", back: "المحتويات قابلة للكسر ويجب التعامل معها بحذر شديد (Fragile).", hint: "قابل للكسر" },
+            { front: "رمز الأسهم المتجهة للأعلى على الطرود", back: "يشير إلى الاتجاه الصحيح للوضع والتخزين (هذا الجانب للأعلى).", hint: "يمنع تقليب الصندوق" },
+            { front: "الأحمال الضخمة التي تحجب الرؤية", back: "طلب مساعدة موجه (Spotter) أو القيادة بالخلف في الرافعات.", hint: "عدم الرؤية الأمامية" },
+            { front: "تخزين المواد الكيميائية والأكالة", back: "في مناطق مخصصة مع وجود حوامل احتواء التسرب وبعيداً عن الأغذية.", hint: "منع التلوث التبادلي" },
+            { front: "فحص سلاسل وأحزمة الرفع (Slings)", back: "التأكد من خلوها من التآكل، القطع، أو التشققات قبل كل رفع.", hint: "فحص معدات التعليق" },
+            { front: "صحيفة بيانات سلامة المادة (SDS)", back: "وثيقة توضح مخاطر المادة الكيميائية وتدابير السلامة والإسعافات.", hint: "مرجع المواد الخطرة" },
+            { front: "بلاستيك التغليف (Stretch Wrap)", back: "لف البضائع على الطبلية لتجميع الكراتين ومنع تفككها.", hint: "تجميع الشحنة" },
+            { front: "إيقاف الرافعة الشوكية وتأمينها", back: "إنزال الشوكات للأرض، سحب فرامل اليد، إيقاف المحرك، وسحب المفتاح.", hint: "القاعدة الذهبية للايقاف" }
+        ];
+
+        // ================= APP STATE VARIABLES =================
+        let currentQuestionIndex = 0;
+        let userAnswers = new Array(questionsData.length).fill(null);
+        let currentCardIndex = 0;
+        let isCardFlipped = false;
+
+        // ================= NAVIGATION FUNCTIONS =================
+        function switchTab(tabName) {
+            document.querySelectorAll('#section-exam, #section-flashcards, #section-guide').forEach(sec => sec.classList.add('hidden'));
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('bg-saudi-green', 'text-white', 'shadow');
+                btn.classList.add('text-slate-300');
+            });
+            document.querySelectorAll('.mtab-btn').forEach(btn => {
+                btn.classList.remove('text-saudi-gold', 'border-b-2', 'border-saudi-gold');
+                btn.classList.add('text-slate-400');
+            });
+
+            if (tabName === 'exam') {
+                document.getElementById('section-exam').classList.remove('hidden');
+                document.getElementById('tab-exam').classList.add('bg-saudi-green', 'text-white', 'shadow');
+                document.getElementById('mtab-exam').classList.add('text-saudi-gold', 'border-b-2', 'border-saudi-gold');
+            } else if (tabName === 'flashcards') {
+                document.getElementById('section-flashcards').classList.remove('hidden');
+                document.getElementById('tab-flashcards').classList.add('bg-saudi-green', 'text-white', 'shadow');
+                document.getElementById('mtab-flashcards').classList.add('text-saudi-gold', 'border-b-2', 'border-saudi-gold');
+                renderCard();
+            } else if (tabName === 'guide') {
+                document.getElementById('section-guide').classList.remove('hidden');
+                document.getElementById('tab-guide').classList.add('bg-saudi-green', 'text-white', 'shadow');
+                document.getElementById('mtab-guide').classList.add('text-saudi-gold', 'border-b-2', 'border-saudi-gold');
+            }
+        }
+
+        // ================= EXAM FUNCTIONS =================
+        function renderQuestion() {
+            const q = questionsData[currentQuestionIndex];
+            document.getElementById('question-number').innerText = `السؤال ${currentQuestionIndex + 1} من ${questionsData.length}`;
+            document.getElementById('question-category').innerText = q.category;
+            document.getElementById('question-text').innerText = q.q;
+
+            const optionsContainer = document.getElementById('options-container');
+            optionsContainer.innerHTML = '';
+
+            q.options.forEach((opt, idx) => {
+                const isSelected = userAnswers[currentQuestionIndex] === idx;
+                const btn = document.createElement('button');
+                btn.className = `w-full text-right p-4 rounded-xl border font-semibold text-sm transition flex items-center justify-between ${
+                    isSelected 
+                        ? 'border-saudi-green bg-emerald-50 text-saudi-dark shadow-sm' 
+                        : 'border-slate-200 bg-white hover:bg-slate-50 text-slate-700'
+                }`;
+                btn.innerHTML = `<span>${opt}</span> <span class="w-6 h-6 rounded-full border flex items-center justify-center text-xs ${isSelected ? 'bg-saudi-green text-white border-saudi-green' : 'border-slate-300 text-slate-400'}">${idx + 1}</span>`;
+                btn.onclick = () => selectOption(idx);
+                optionsContainer.appendChild(btn);
+            });
+
+            // Update feedback box if answered
+            const feedbackBox = document.getElementById('feedback-box');
+            if (userAnswers[currentQuestionIndex] !== null) {
+                const userChoice = userAnswers[currentQuestionIndex];
+                feedbackBox.classList.remove('hidden');
+                if (userChoice === q.correct) {
+                    feedbackBox.className = "p-4 rounded-xl border text-sm font-semibold leading-relaxed bg-emerald-50 border-emerald-200 text-emerald-800";
+                    feedbackBox.innerHTML = `<i class="fa-solid fa-circle-check ml-2 text-emerald-600"></i>إجابة صحيحة! أحسنت.`;
+                } else {
+                    feedbackBox.className = "p-4 rounded-xl border text-sm font-semibold leading-relaxed bg-rose-50 border-rose-200 text-rose-800";
+                    feedbackBox.innerHTML = `<i class="fa-solid fa-circle-xmark ml-2 text-rose-600"></i>إجابة خاطئة. الإجابة الصحيحة هي: <span class="font-bold underline">${q.options[q.correct]}</span>`;
+                }
+            } else {
+                feedbackBox.classList.add('hidden');
+            }
+
+            // Update Buttons
+            document.getElementById('btn-prev').disabled = currentQuestionIndex === 0;
+            document.getElementById('btn-next').innerText = currentQuestionIndex === questionsData.length - 1 ? 'إنهاء الاختبار' : 'السؤال التالي';
+            
+            updateScoreDisplay();
+        }
+
+        function selectOption(idx) {
+            userAnswers[currentQuestionIndex] = idx;
+            renderQuestion();
+        }
+
+        function navigateQuestion(direction) {
+            const newIndex = currentQuestionIndex + direction;
+            if (newIndex >= 0 && newIndex < questionsData.length) {
+                currentQuestionIndex = newIndex;
+                renderQuestion();
+            } else if (newIndex >= questionsData.length) {
+                // Finish exam
+                let correctCount = 0;
+                userAnswers.forEach((ans, idx) => {
+                    if (ans === questionsData[idx].correct) correctCount++;
+                });
+                alert(`لقد انهيت الاختبار بنجاح!\nنتيجتك: ${correctCount} من ${questionsData.length}`);
+            }
+        }
+
+        function restartExam() {
+            userAnswers = new Array(questionsData.length).fill(null);
+            currentQuestionIndex = 0;
+            renderQuestion();
+        }
+
+        function updateScoreDisplay() {
+            let correctCount = 0;
+            let answeredCount = 0;
+            userAnswers.forEach((ans, idx) => {
+                if (ans !== null) {
+                    answeredCount++;
+                    if (ans === questionsData[idx].correct) correctCount++;
+                }
+            });
+            document.getElementById('score-text').innerText = `${correctCount} / ${questionsData.length}`;
+        }
+
+        // ================= FLASHCARDS FUNCTIONS =================
+        function renderCard() {
+            const card = flashcardsData[currentCardIndex];
+            document.getElementById('card-front-text').innerText = card.front;
+            document.getElementById('card-hint').innerText = card.hint;
+            document.getElementById('card-back-text').innerText = card.back;
+            document.getElementById('card-num').innerText = currentCardIndex + 1;
+            document.getElementById('card-total').innerText = flashcardsData.length;
+
+            if (isCardFlipped) {
+                flipCardState(false);
+            }
+        }
+
+        function flipCard() {
+            isCardFlipped = !isCardFlipped;
+            flipCardState(isCardFlipped);
+        }
+
+        function flipCardState(flipped) {
+            const inner = document.getElementById('flashcard-inner');
+            if (flipped) {
+                inner.style.transform = 'rotateY(180deg)';
+            } else {
+                inner.style.transform = 'rotateY(0deg)';
+            }
+        }
+
+        function nextCard() {
+            currentCardIndex = (currentCardIndex + 1) % flashcardsData.length;
+            renderCard();
+        }
+
+        function prevCard() {
+            currentCardIndex = (currentCardIndex - 1 + flashcardsData.length) % flashcardsData.length;
+            renderCard();
+        }
+
+        // ================= INITIALIZATION =================
+        window.onload = function() {
+            renderQuestion();
+            renderCard();
+        };
+    </script>
+</body>
+</html>
